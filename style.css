@@ -4,6 +4,21 @@ canvas{
   left:0;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+  width: 100%;
+  height: 100%;
+}
+
+#bg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Ensure canvas doesn't cause overflow */
+}
+
 /* Firefox */
 * {
   scrollbar-width: auto;
@@ -26,14 +41,40 @@ canvas{
 }
 
 #section-one {
-  position: absolute;
-  top: 5vh;
-  left: 0;
-  color: black;
   display: flex;
-  align-items: center; /* Aligns content vertically centered */
-  padding-left: 5vw; /* Creates space between the image and the text */
+  flex-direction: row;
+  position: fixed; /* Keep it fixed to prevent scrolling */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5; /* Ensure it's below the buttons but above the canvas */
 }
+
+#section-one svg {
+  font-size: clamp(32px, 8vw, 96px);
+  font-family: 'JetBrains Mono';
+  letter-spacing: 0.15em;
+  fill: black;
+  stroke: black;
+  fill-opacity: 1;
+  stroke-width: 0;
+  stroke-dasharray: 100% 0;
+  animation: stroke-offset 3s ease-out;
+  display: flex;
+  letter-spacing: 0.15em;
+  width: auto;
+  height: auto; /* Let the SVG adjust to content */
+  overflow: visible;
+  transform: translateY(calc(100px + 5vw - 1em)); /* Adjusts the vertical position of the text */
+}
+
+@media (max-width: 768px) {
+  #section-one svg {
+    font-size: clamp(42px, 10vw, 120px); /* Larger size specifically for mobile screens */
+  }
+}
+
 
 #avatar {
   height: calc(100px + 5vw);
@@ -43,30 +84,21 @@ canvas{
 }
 
 
-svg {
-  display: flex;
-  letter-spacing: 0.15em;
-  width: auto;
-  height: auto; /* Let the SVG adjust to content */
-  overflow: visible;
-  transform: translateY(calc(100px + 5vw - 1.4em)); /* Adjusts the vertical position of the text */
-}
 
-#section-one text {
-  letter-spacing: 0.15em;
-  fill: black;
-  stroke: black;
-  fill-opacity: 1;
-  stroke-width: 0;
-  stroke-dasharray: 100% 0;
-  animation: stroke-offset 3s ease-out;
-}
-
-#playPauseButton {
+#buttonContainer {
   position: fixed;
   bottom: 20px; /* Distance from the bottom of the screen */
   left: 50%;
-  transform: translateX(-50%); /* Center the button horizontally */
+  transform: translateX(-50%); /* Center the container horizontally */
+  display: flex;
+  gap: 10px; /* Space between the buttons */
+  z-index: 1000; /* Ensure the container stays on top of other elements */
+  flex-direction: row;
+}
+
+
+#playPauseButton,
+#moveCameraButton {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #0077ff;
@@ -74,8 +106,9 @@ svg {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 1000; /* Ensure the button stays on top of other elements */
 }
+
+
 
 
 

@@ -4,10 +4,10 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {HalftonePass} from 'three/examples/jsm/postprocessing/HalftonePass.js';
+import { gsap } from 'gsap';
+
 
 const jackURL = new URL('voxelme3.glb', import.meta.url);
-const computer = new URL('old_pc.glb', import.meta.url);
-const ship = new URL('spaceship.glb', import.meta.url);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -17,22 +17,54 @@ const camera = new THREE.PerspectiveCamera(
   700
 );
 
-function moveCamera(){
-  const t = document.body.getBoundingClientRect().top;
-  camera.position.y = t * -0.10 + 28;
-  scene.rotation.y = t / 1000;
-  camera.lookAt(30, 10, 0);
+
+const moveCameraButton = document.getElementById('moveCameraButton');
+
+function moveCameraToPosition() {
+  gsap.to(camera.position, {
+    x: 25,
+    y: 240,
+    z: -20,
+    duration: 2, // Duration of the animation in seconds
+    ease: 'power2.out', // Easing function for smooth movement
+    onUpdate: () => {
+      camera.lookAt(targetPoint); // Ensure the camera keeps looking at the target during the animation
+    }
+  });
+}
+moveCameraButton.addEventListener('click', moveCameraToPosition);
+
+const sectionOne = document.getElementById('section-one');
+const aboutMe = document.getElementById('aboutMe');
+
+function fadeOut(element, duration = 0.5) {
+  gsap.to(element, { opacity: 0, duration: duration, onComplete: () => {
+    element.style.display = 'none'; // Hide the element after fading out
+  }});
 }
 
-document.body.onscroll = moveCamera
-camera.position.set(25, 28, -20,);
-camera.lookAt(30, 10, 0);
+function fadeIn(element, duration = 0.5) {
+  element.style.display = 'flex'; // Ensure the element is visible before fading in
+  gsap.to(element, { opacity: 1, duration: duration });
+}
+
+function checkCameraPosition() {
+  const thresholdY = 100; // Adjust this value as needed
+
+  // Show or hide sections based on camera's y position
+  if (camera.position.y > thresholdY) {
+    fadeOut(sectionOne, 0.5);
+    fadeIn(aboutMe, 0.5);
+  } else {
+    fadeOut(aboutMe, 0.5);
+    fadeIn(sectionOne, 0.5);
+  }
+}
 
 const playPauseButton = document.getElementById('playPauseButton');
-
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioContext.createAnalyser();
-analyser.fftSize = 256;
+analyser.fftSize = 256; //fft
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
@@ -60,11 +92,9 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize(window.innerWidth , window.innerHeight);
-
 renderer.render(scene, camera);
 
 const mouse = new THREE.Vector2()
-
 window.addEventListener('mousemove', (event) =>{
   mouse.x = event.clientX / window.innerWidth * 2 - 1;
   mouse.y = - (event.clientY / window.innerHeight) * 2 -1
@@ -121,7 +151,6 @@ function createRing(innerRadius, outerRadius) {
     defaultScales.push(1);
 }
 
-
 for (let i = 0; i < 100; i++) {
     const innerRadius = 1 + i * 3;
     const outerRadius = innerRadius + 0.1;
@@ -150,30 +179,30 @@ assetLoader.load(jackURL.href, function(gltf){
     console.error(error);
 });
 
-let pc;
-assetLoader.load(computer.href, function(gltf){
-  pc = gltf.scene;
-  scene.add(pc);
-  pc.position.set(-20, 110, -100);
-  // model.rotation.y = Math.PI * 0.25
-  pc.rotation.x = Math.PI * 0.05
+// let pc;
+// assetLoader.load(computer.href, function(gltf){
+//   pc = gltf.scene;
+//   scene.add(pc);
+//   pc.position.set(-20, 110, -100);
+//   // model.rotation.y = Math.PI * 0.25
+//   pc.rotation.x = Math.PI * 0.05
   
   
-}, undefined, function(error) {
-  console.error(error);
-});
+// }, undefined, function(error) {
+//   console.error(error);
+// });
 
-let spaceship;
-assetLoader.load(ship.href, function(gltf){
-  spaceship = gltf.scene;
-  scene.add(spaceship);
-  spaceship.position.set(250, 110, -200);
-  // model.rotation.y = Math.PI * 0.25
+// let spaceship;
+// assetLoader.load(ship.href, function(gltf){
+//   spaceship = gltf.scene;
+//   scene.add(spaceship);
+//   spaceship.position.set(250, 110, -200);
+//   // model.rotation.y = Math.PI * 0.25
   
   
-}, undefined, function(error) {
-  console.error(error);
-});
+// }, undefined, function(error) {
+//   console.error(error);
+// });
 
 var mat2 = new THREE.PointsMaterial({
 	color: 'black',
@@ -182,7 +211,8 @@ var mat2 = new THREE.PointsMaterial({
 });
 var geometry2 = new THREE.SphereGeometry(50, 50, 14);
 var geometry3 = new THREE.SphereGeometry(25, 25, 14);
-// Mesh
+
+
 var mesh2 = new THREE.Points(geometry2, mat2);
 mesh2.position.z = -500;
 mesh2.position.x = 100;
@@ -198,13 +228,9 @@ scene.add(mesh3);
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
-//const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.8, 0.4, 0.85);
 const pass = new HalftonePass(window.innerWidth, window.innerHeight, {greyscale: true, radius: 1, scatter: 1, blending: 1})
-//bloomPass.renderToScreen = true;
 pass.renderToScreen = true;
 composer.addPass(pass);
-
-const raycaster = new THREE.Raycaster();
 
 function animate(time) {
 
@@ -217,14 +243,7 @@ function animate(time) {
 	mesh2.rotation.z += 0.001;
   mesh3.rotation.y -= 0.001;
 	mesh3.rotation.z -= 0.001;
-  if(pc){
-    pc.rotation.y -= 0.0005;
-    pc.rotation.z -= 0.0005;
-    pc.rotation.x += 0.0005;
-    }
-  if(spaceship){
-    spaceship.position.x -= time / 100000;
-    }
+
   composer.render(scene, camera);
 
   rings.forEach((ring, index) => {
@@ -240,15 +259,44 @@ function animate(time) {
        
         ring.scale.set(dynamicScale, dynamicScale, 1);
     });
-
   //console.log(camera.position)
+  checkCameraPosition();
+
 }
 renderer.setAnimationLoop(animate);
 
-window.addEventListener('resize', function(){
+
+
+// Target point where your character or model is positioned
+const targetPoint = new THREE.Vector3(13, 0.2, 7); // Adjust this to your model's position
+
+function resize() {
+  // Update the aspect ratio of the camera
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
 
-})
+  // Update the renderer size
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  // Update the halftone pass with the new window dimensions (if needed)
+  pass.uniforms.width.value = window.innerWidth;
+  pass.uniforms.height.value = window.innerHeight;
+  composer.setSize(window.innerWidth, window.innerHeight);
+
+  // Adjust the camera position to ensure it keeps the target centered on desktop
+  const isMobile = window.innerWidth <= 768; // Adjust the threshold for mobile as needed
+  if (isMobile) {
+    camera.position.set(25, 42, -30); // Higher position for smaller screens
+  } else {
+    camera.position.set(25, 28, -20); // Original position for larger screens
+  }
+
+  camera.lookAt(targetPoint); // Ensure the camera looks at the model's position
+}
+
+// Add event listener for window resize
+window.addEventListener('resize', resize);
+
+// Initial setup for camera position
+camera.position.set(25, 28, -20);
+camera.lookAt(targetPoint);
 

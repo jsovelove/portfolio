@@ -2,38 +2,35 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
     <style> @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;0,600;0,700;1,700&display=swap'); </style>
   </head>
   <body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <canvas id="bg" ></canvas>
     <script type="module" src="/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <main>
       <div id="section-one">
-        <img id="avatar" src="fade.svg" alt="">
-        <svg style="font-size: calc(10px + 5vw); font-family: 'JetBrains Mono';">
-          <text x="0" y="0" text-anchor="start">
+        <img id="avatar" src="fade.svg" alt="" loading="lazy">
+
+        <svg>
+          <text text-anchor="start">
             <tspan x="0" dy="0">Jack</tspan>
-            <tspan x="0" dy="1.2em">Sovelove</tspan>
-            <tspan x="0" dy="1.5em" style="font-size: 30px; letter-spacing: 0.1em;">Creative Technologist</tspan>
+            <tspan x="0" dy="1em">Sovelove</tspan>
+            <!-- <tspan x="0" dy="1.5em" style="font-size: 30px; letter-spacing: 0.1em;">Creative Technologist</tspan> -->
           </text>
         </svg>
       </div>
-      <button id="playPauseButton">Play</button>
+      <div id="buttonContainer">
+        <button id="playPauseButton">Play</button>
+        <button id="moveCameraButton">About</button>
       </div>
-      <div style="position:absolute; top:300vh; left:5vw; color:black;">
-        <div style="position:relative; font-size:calc(10px + 5vw); font-family:'JetBrains Mono';">Links</div>
-        
+      
+      <div id="aboutMe" style="display: none;">
       </div>
-      <div class="nav center">
-        <a href="">Github<br>One</a>
-        <a href="">Instagram<br>Two</a>
-        <a href="">Email<br>Three</a>
-        <a href="">Projects<br>Four</a>
       </div>
     </main>
   </body>
