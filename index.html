@@ -7,28 +7,27 @@
     <title>Vite App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
     <style> @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;0,600;0,700;1,700&display=swap'); </style>
-    <script type="module" crossorigin src="/portfolio/assets/index-f6f3155d.js"></script>
-    <link rel="stylesheet" href="/portfolio/assets/index-e51d3954.css">
+    <script type="module" crossorigin src="/portfolio/assets/index-4c454efc.js"></script>
+    <link rel="stylesheet" href="/portfolio/assets/index-2decad7f.css">
   </head>
   <body>
     <canvas id="bg" ></canvas>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <main>
-      <div class="section-one" style="position:absolute; top:5vh; left:5vw; color:white;">
-        <!-- <div id="ontext" style="position:relative; font-size:calc(10px + 5vw); font-family:'JetBrains Mono';">Jack Sovelove</div> -->
-        <svg style="position:relative; font-size:calc(10px + 5vw); font-family:'JetBrains Mono';">
-          <text text-anchor="left" x="40%" y="50%">Jack Sovelove.</text>
+      <div id="section-one">
+        <img id="avatar" src="fade.svg" alt="">
+        <svg style="font-size: calc(10px + 5vw); font-family: 'JetBrains Mono';">
+          <text x="0" y="0" text-anchor="start">
+            <tspan x="0" dy="0">Jack</tspan>
+            <tspan x="0" dy="1.2em">Sovelove</tspan>
+            <tspan x="0" dy="1.5em" style="font-size: 30px; letter-spacing: 0.1em;">Creative Technologist</tspan>
+          </text>
         </svg>
-        <div style="position:relative; font-size:calc(8px + 0.5vw); font-family:'JetBrains Mono';"> Visual Artist, Programmer, Musician, Sound Designer</div>
-        
       </div>
-      <div class="section-two" style="position:absolute; top:170vh; left:5vw; color:white;">
-        <div style="position:relative; font-size:calc(10px + 5vw); font-family:'JetBrains Mono';">About Me</div>
-        <p style="position:relative; font-size:calc(7px + 1vw); font-family:'JetBrains Mono'; width: 500px">I'm a student at Western Washington University. I'm currently pursuing a major in mathematics and computer science and a minor in audio engineering. In my free time I make music, movies, and pursue random creative projects. </p>
+      <button id="playPauseButton">Play</button>
       </div>
-      
-      <div style="position:absolute; top:300vh; left:5vw; color:white;">
+      <div style="position:absolute; top:300vh; left:5vw; color:black;">
         <div style="position:relative; font-size:calc(10px + 5vw); font-family:'JetBrains Mono';">Links</div>
         
       </div>
