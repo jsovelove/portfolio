@@ -25,12 +25,14 @@ function moveCamera(){
   const t = document.body.getBoundingClientRect().top;
   camera.position.y = t * -0.10 + 28;
   scene.rotation.y = t / 1000;
+  camera.lookAt(30, 10, 0);
 }
 
 document.body.onscroll = moveCamera
 camera.position.set(25, 28, -20,);
 camera.lookAt(30, 10, 0);
 
+const playPauseButton = document.getElementById('playPauseButton');
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioContext.createAnalyser();
@@ -44,7 +46,19 @@ audio.crossOrigin = 'anonymous';
 const track = audioContext.createMediaElementSource(audio);
 track.connect(analyser);
 analyser.connect(audioContext.destination);
-audio.play();
+
+function togglePlayPause() {
+  if (audio.paused) {
+      audio.play();
+      playPauseButton.textContent = 'Pause';
+  } else {
+      audio.pause();
+      playPauseButton.textContent = 'Play';
+  }
+}
+
+playPauseButton.addEventListener('click', togglePlayPause);
+
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
@@ -98,19 +112,21 @@ scene.add(particles)
 
 
 const rings = [];
+const defaultScales = [];
 
 // Function to create a ring
 function createRing(innerRadius, outerRadius) {
-  const geometry = new THREE.RingGeometry(innerRadius, outerRadius, 64);
-  const material = new THREE.MeshStandardMaterial({
-      color: 0x000000,
-      side: THREE.DoubleSide,
-  });
-  const ring = new THREE.Mesh(geometry, material);
-  ring.position.set(13, 0.2, 7);
-  ring.rotation.x = -Math.PI / 2;
-  scene.add(ring);
-  rings.push(ring);
+    const geometry = new THREE.RingGeometry(innerRadius, outerRadius, 64);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x000000,
+        side: THREE.DoubleSide,
+    });
+    const ring = new THREE.Mesh(geometry, material);
+    ring.position.set(13, 0.2, 7);
+    ring.rotation.x = -Math.PI / 2;
+    scene.add(ring);
+    rings.push(ring);
+    defaultScales.push(1); // Store the default scale for each ring (e.g., 1)
 }
 
 
@@ -199,6 +215,10 @@ composer.addPass(pass);
 const raycaster = new THREE.Raycaster();
 
 function animate(time) {
+
+  analyser.getByteFrequencyData(dataArray);
+
+
   particles.rotation.x = time / 100000;
   particles.rotation.y = time / 100000;
   mesh2.rotation.y += 0.001;
@@ -214,6 +234,23 @@ function animate(time) {
     spaceship.position.x -= time / 100000;
     }
   composer.render(scene, camera);
+
+  rings.forEach((ring, index) => {
+    const scale = dataArray[index % bufferLength] / 128; // Normalize and scale the value
+    ring.scale.set(scale, scale, 1); // Scale the ring on the X and Y axes
+  });
+
+  rings.forEach((ring, index) => {
+        const frequencyValue = dataArray[index % bufferLength];
+        const normalizedValue = frequencyValue / 255; // Normalize between 0 and 1
+
+        // Calculate the dynamic scale based on the FFT data and default scale
+        const dynamicScale = 1 + normalizedValue; // Start at scale 1 and add the normalized value
+
+        // Ensure that the ring scale is affected by FFT only if the audio is playing
+        ring.scale.set(dynamicScale, dynamicScale, 1);
+    });
+
   //console.log(camera.position)
 }
 renderer.setAnimationLoop(animate);

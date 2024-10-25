@@ -62,6 +62,20 @@ svg {
   animation: stroke-offset 3s ease-out;
 }
 
+#playPauseButton {
+  position: fixed;
+  bottom: 20px; /* Distance from the bottom of the screen */
+  left: 50%;
+  transform: translateX(-50%); /* Center the button horizontally */
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #0077ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button stays on top of other elements */
+}
 
 
 
@@ -79,7 +93,7 @@ svg {
 }
 
 .nav a {
-  color: white;
+  color: black;
   font-family:'JetBrains Mono';
   display: inline-block;
   width: 250px;
@@ -98,7 +112,7 @@ svg {
 }
 .nav a:hover {
   color: black;
-  background: white;
+  background: black;
 }
 
 @media (max-width: 768px) {
