@@ -5,12 +5,9 @@ import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.j
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {HalftonePass} from 'three/examples/jsm/postprocessing/HalftonePass.js';
 
-
-
 const jackURL = new URL('voxelme3.glb', import.meta.url);
 const computer = new URL('old_pc.glb', import.meta.url);
 const ship = new URL('spaceship.glb', import.meta.url);
-
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -19,7 +16,6 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   700
 );
-
 
 function moveCamera(){
   const t = document.body.getBoundingClientRect().top;
@@ -36,11 +32,10 @@ const playPauseButton = document.getElementById('playPauseButton');
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioContext.createAnalyser();
-analyser.fftSize = 256; // Adjust this for the resolution of the frequency data
+analyser.fftSize = 256;
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
-// Load and play the audio file
 const audio = new Audio('public/bug.mp3');
 audio.crossOrigin = 'anonymous';
 const track = audioContext.createMediaElementSource(audio);
@@ -84,8 +79,6 @@ scene.add(directionalLight);
 directionalLight.position.set(0, 50, -30);
 directionalLight.lookAt(30, 10, 0)
 
-
-
 scene.background = new THREE.Color(0xffffff);
 
 let material;
@@ -114,7 +107,6 @@ scene.add(particles)
 const rings = [];
 const defaultScales = [];
 
-// Function to create a ring
 function createRing(innerRadius, outerRadius) {
     const geometry = new THREE.RingGeometry(innerRadius, outerRadius, 64);
     const material = new THREE.MeshStandardMaterial({
@@ -126,7 +118,7 @@ function createRing(innerRadius, outerRadius) {
     ring.rotation.x = -Math.PI / 2;
     scene.add(ring);
     rings.push(ring);
-    defaultScales.push(1); // Store the default scale for each ring (e.g., 1)
+    defaultScales.push(1);
 }
 
 
@@ -236,18 +228,16 @@ function animate(time) {
   composer.render(scene, camera);
 
   rings.forEach((ring, index) => {
-    const scale = dataArray[index % bufferLength] / 128; // Normalize and scale the value
-    ring.scale.set(scale, scale, 1); // Scale the ring on the X and Y axes
+    const scale = dataArray[index % bufferLength] / 128;
+    ring.scale.set(scale, scale, 1);
   });
 
   rings.forEach((ring, index) => {
         const frequencyValue = dataArray[index % bufferLength];
-        const normalizedValue = frequencyValue / 255; // Normalize between 0 and 1
+        const normalizedValue = frequencyValue / 255;
 
-        // Calculate the dynamic scale based on the FFT data and default scale
-        const dynamicScale = 1 + normalizedValue; // Start at scale 1 and add the normalized value
-
-        // Ensure that the ring scale is affected by FFT only if the audio is playing
+        const dynamicScale = 1 + normalizedValue;
+       
         ring.scale.set(dynamicScale, dynamicScale, 1);
     });
 
