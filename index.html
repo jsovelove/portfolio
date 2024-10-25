@@ -13,12 +13,18 @@
     <script type="module" src="/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <main>
-      <div class="section-one" style="position:absolute; top:5vh; left:5vw; color:white;">
-        <!-- <div id="ontext" style="position:relative; font-size:calc(10px + 5vw); font-family:'JetBrains Mono';">Jack Sovelove</div> -->
-        <svg style="position:relative; font-size:calc(10px + 5vw); font-family:'JetBrains Mono';">
-          <text text-anchor="left" x="40%" y="50%">Jack Sovelove.</text>
+      <div id="section-one">
+        <img id="avatar" src="fade.svg" alt="">
+        <svg style="font-size: calc(10px + 5vw); font-family: 'JetBrains Mono';">
+          <text x="0" y="0" text-anchor="start">
+            <tspan x="0" dy="0">Jack</tspan>
+            <tspan x="0" dy="1.2em">Sovelove</tspan>
+          </text>
         </svg>
-        <div style="position:relative; font-size:calc(8px + 0.5vw); font-family:'JetBrains Mono';"> Visual Artist, Programmer, Musician, Sound Designer</div>
+      </div>
+      
+          
+    
         
       </div>
       <div class="section-two" style="position:absolute; top:170vh; left:5vw; color:white;">

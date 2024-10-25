@@ -1,14 +1,9 @@
 import './style.css'
-
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
-import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import {GlitchPass} from 'three/examples/jsm/postprocessing/GlitchPass';
-import * as dat from 'dat.gui';
-import { Raycaster } from 'three';
-
+import {HalftonePass} from 'three/examples/jsm/postprocessing/HalftonePass.js';
 
 
 
@@ -24,10 +19,32 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   700
 );
-camera.position.set(30, 20, 30)
 
 
+function moveCamera(){
+  const t = document.body.getBoundingClientRect().top;
+  camera.position.y = t * -0.10 + 28;
+  scene.rotation.y = t / 1000;
+}
 
+document.body.onscroll = moveCamera
+camera.position.set(25, 28, -20,);
+camera.lookAt(30, 10, 0);
+
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+analyser.fftSize = 256; // Adjust this for the resolution of the frequency data
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// Load and play the audio file
+const audio = new Audio('public/bug.mp3');
+audio.crossOrigin = 'anonymous';
+const track = audioContext.createMediaElementSource(audio);
+track.connect(analyser);
+analyser.connect(audioContext.destination);
+audio.play();
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
@@ -37,10 +54,6 @@ renderer.setSize(window.innerWidth , window.innerHeight);
 
 renderer.render(scene, camera);
 
-
-
-
-
 const mouse = new THREE.Vector2()
 
 window.addEventListener('mousemove', (event) =>{
@@ -49,22 +62,24 @@ window.addEventListener('mousemove', (event) =>{
 
 })
 
-
 const ambientLight = new THREE.AmbientLight(0x333333);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1.7);
+const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 2);
 scene.add(directionalLight);
 directionalLight.position.set(0, 50, -30);
-directionalLight.castShadow = true;
-directionalLight.shadow.camera.bottom = -12;
+directionalLight.lookAt(30, 10, 0)
+
+
+
+scene.background = new THREE.Color(0xffffff);
 
 let material;
 const geometry = new THREE.BufferGeometry()
 const vertices = []
 const size = 1000
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 2000; i++) {
     const x = (Math.random() * size + Math.random() * size) / 2 - size / 2
     const y = (Math.random() * size + Math.random() * size) / 2 - size / 2
     const z = (Math.random() * size + Math.random() * size) / 2 - size / 2
@@ -76,23 +91,40 @@ geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
 
 material = new THREE.PointsMaterial({
     size: 1,
-    color: 0xffffff,
+    color: 'black',
 })
-
 const particles = new THREE.Points(geometry, material)
 scene.add(particles)
 
-function moveCamera(){
-  const t = document.body.getBoundingClientRect().top;
-  camera.position.y = t * -0.10 + 20;
-  scene.rotation.y = t / 500;
+
+const rings = [];
+
+// Function to create a ring
+function createRing(innerRadius, outerRadius) {
+  const geometry = new THREE.RingGeometry(innerRadius, outerRadius, 64);
+  const material = new THREE.MeshStandardMaterial({
+      color: 0x000000,
+      side: THREE.DoubleSide,
+  });
+  const ring = new THREE.Mesh(geometry, material);
+  ring.position.set(13, 0.2, 7);
+  ring.rotation.x = -Math.PI / 2;
+  scene.add(ring);
+  rings.push(ring);
 }
 
-document.body.onscroll = moveCamera
+
+for (let i = 0; i < 100; i++) {
+    const innerRadius = 1 + i * 3;
+    const outerRadius = innerRadius + 0.1;
+    createRing(innerRadius, outerRadius, 0);
+}
+
 
 var geo = new THREE.PlaneGeometry(1000, 1000, 8, 8);
-var mat = new THREE.MeshBasicMaterial({ color:'black', side: THREE.DoubleSide });
+var mat = new THREE.MeshBasicMaterial({ color:'white', side: THREE.DoubleSide });
 var plane = new THREE.Mesh(geo, mat);
+plane.receiveShadow = true;
 scene.add(plane);
 plane.rotation.x = Math.PI * 0.5;
 
@@ -104,7 +136,7 @@ assetLoader.load(jackURL.href, function(gltf){
     model.position.set(9, 0.34, 6);
     // model.rotation.y = Math.PI * 0.25
     model.rotation.x = Math.PI * 0.05
-    
+    model.castShadow = true;
     
 }, undefined, function(error) {
     console.error(error);
@@ -135,32 +167,8 @@ assetLoader.load(ship.href, function(gltf){
   console.error(error);
 });
 
-
-camera.position.set(25, 20, -20,);
-camera.lookAt(30, 5, 10);
-
-
-
-onload = function(){
-  camera.position.set(30, 50, 30)
-  camera.lookAt(30, 5, 10)
-  gsap.to(camera.position, {
-      x: 25,
-      z: -20,
-      y: 20,
-      duration: 1,
-      onUpdate: function() {
-          camera.lookAt(30, 5, 10);
-          
-      }
-  });
-  
-};
-
-
-
 var mat2 = new THREE.PointsMaterial({
-	color: 'white',
+	color: 'black',
 	size: 1,
 	sizeAttenuation: false
 });
@@ -182,9 +190,11 @@ scene.add(mesh3);
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
-const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.8, 0.4, 0.85);
-bloomPass.renderToScreen = true;
-composer.addPass(bloomPass);
+//const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.8, 0.4, 0.85);
+const pass = new HalftonePass(window.innerWidth, window.innerHeight, {greyscale: true, radius: 1, scatter: 1, blending: 1})
+//bloomPass.renderToScreen = true;
+pass.renderToScreen = true;
+composer.addPass(pass);
 
 const raycaster = new THREE.Raycaster();
 
@@ -204,6 +214,7 @@ function animate(time) {
     spaceship.position.x -= time / 100000;
     }
   composer.render(scene, camera);
+  //console.log(camera.position)
 }
 renderer.setAnimationLoop(animate);
 

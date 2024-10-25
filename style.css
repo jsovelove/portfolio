@@ -25,24 +25,45 @@ canvas{
   border: 3px solid #ffffff;
 }
 
-svg {
+#section-one {
   position: absolute;
-  letter-spacing: 0.15em;
-  width: 100%;
-  height: 100%;
-  margin-top: 5%;
-  overflow: visible;
-  right: 250px;
+  top: 5vh;
+  left: 0;
+  color: black;
+  display: flex;
+  align-items: center; /* Aligns content vertically centered */
+  padding-left: 5vw; /* Creates space between the image and the text */
 }
 
-svg text {
-  fill: white;
-  stroke: white;
+#avatar {
+  height: calc(100px + 5vw);
+  margin-right: 0.5vw;
+  border: 2px solid white; /* Adds a white border around the image */
+  z-index: 1; /* Ensure it appears above other elements if needed */
+}
+
+
+svg {
+  display: flex;
+  letter-spacing: 0.15em;
+  width: auto;
+  height: auto; /* Let the SVG adjust to content */
+  overflow: visible;
+  transform: translateY(calc(100px + 5vw - 1.4em)); /* Adjusts the vertical position of the text */
+}
+
+#section-one text {
+  letter-spacing: 0.15em;
+  fill: black;
+  stroke: black;
   fill-opacity: 1;
   stroke-width: 0;
   stroke-dasharray: 100% 0;
   animation: stroke-offset 3s ease-out;
- }
+}
+
+
+
 
  .center {
   width: 1000px;
@@ -56,6 +77,7 @@ svg text {
   top:320vh;
   padding: 50px;
 }
+
 .nav a {
   color: white;
   font-family:'JetBrains Mono';
