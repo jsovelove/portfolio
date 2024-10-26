@@ -1,5 +1,5 @@
 export class AudioVisualizer {
-  constructor(audioFilePath, fftSize = 256) {
+  constructor(audioFilePath, fftSize = 256, playIcon, pauseIcon) {
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = this.audioContext.createAnalyser();
     this.analyser.fftSize = fftSize;

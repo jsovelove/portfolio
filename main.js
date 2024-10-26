@@ -41,6 +41,7 @@ const pauseIcon = document.getElementById('pauseIcon');
 const sectionOne = document.getElementById('section-one');
 const aboutMe = document.getElementById('aboutMe');
 const skills = document.getElementById('skills')
+const moveCameraButton = document.getElementById('moveCameraButton'); // The initial button element
 
 playPauseButton.addEventListener('click', () => {
   audioVisualizer.togglePlayPause();
@@ -62,20 +63,7 @@ const cameraButtonController = new CameraButtonController(
   }
 );
 
-// Adding additional buttons
-cameraButtonController.addButton({
-  label: "BIO",
-  position: {
-    default: { x: 50, y: 900, z: -20 }
-  }
-});
 
-cameraButtonController.addButton({
-  label: "SKILLS",
-  position: {
-    default: { x: 50, y: 2000, z: -20 }
-  }
-});
 
 cameraController.resize(window.innerWidth, window.innerHeight);
 

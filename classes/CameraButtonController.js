@@ -3,8 +3,8 @@ export class CameraButtonController {
   constructor(cameraController, buttonContainer, moveCameraButton, sectionOne, moveCameraPosition, backPosition) {
     this.cameraController = cameraController;
     this.buttonContainer = buttonContainer;
-    this.moveCameraButton = moveCameraButton; // Existing moveCameraButton from HTML
-    this.sectionOne = sectionOne; // Reference to sectionOne element
+    this.moveCameraButton = moveCameraButton;
+    this.sectionOne = sectionOne;
     this.isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
 
     // Define positions for moving and returning
@@ -12,99 +12,116 @@ export class CameraButtonController {
     this.backPosition = backPosition;
 
     // Attach click event to the moveCameraButton
-    this.moveCameraButton.addEventListener('click', () => this.moveCamera());
+    this.moveCameraButton.addEventListener('click', () => this.handleMoveCameraClick());
 
     // Create the Back button with an upward arrow icon
     this.backButton = document.createElement('button');
     this.backButton.classList.add('control-button');
     const backIcon = document.createElement('span');
     backIcon.classList.add('material-icons');
-    backIcon.textContent = 'arrow_upward'; // Set the Google Material "upward arrow" icon
+    backIcon.textContent = 'arrow_upward';
     this.backButton.appendChild(backIcon);
-    this.backButton.addEventListener('click', () => this.moveBack());
+    this.backButton.addEventListener('click', () => this.handleBackClick());
 
-    // Initially show sectionOne and Move Camera button
+    // Create the BIO button
+    this.bioButton = document.createElement('button');
+    this.bioButton.classList.add('control-button', 'page-button');
+    this.bioButton.textContent = "BIO";
+    this.bioButton.addEventListener('click', () => this.handleBioClick());
+
+    // Create the SKILLS button
+    this.skillsButton = document.createElement('button');
+    this.skillsButton.classList.add('control-button', 'page-button');
+    this.skillsButton.textContent = "SKILLS";
+    this.skillsButton.addEventListener('click', () => this.handleSkillsClick());
+
+    // Initially show sectionOne and Move Camera utton
     this.showSectionOne();
     this.showMoveCameraButton();
   }
 
-  // Method to move the camera and hide sectionOne
-  moveCamera() {
+  // Handle Move Camera button click
+  handleMoveCameraClick() {
     const targetPosition = this.isMobile && this.moveCameraPosition.mobile ? this.moveCameraPosition.mobile : this.moveCameraPosition.default;
     this.cameraController.moveTo(targetPosition);
 
-    // Replace Move Camera button with Back button and hide sectionOne
-    this.toggleButtons();
+    // Replace Move Camera button with Back and BIO buttons, and hide sectionOne
+    this.toggleToBackAndBioButtons();
     this.hideSectionOne();
   }
 
-  // Method to move the camera back and show sectionOne
-  moveBack() {
+  // Handle Back button click
+  handleBackClick() {
     const targetPosition = this.isMobile && this.backPosition.mobile ? this.backPosition.mobile : this.backPosition.default;
     this.cameraController.moveTo(targetPosition);
 
-    // Replace Back button with Move Camera button and show sectionOne
-    this.toggleButtons();
+    // Reset sequence by displaying Move Camera button again
+    this.resetToMoveCameraButton();
     this.showSectionOne();
   }
 
-  // Toggle between showing Move Camera and Back button
-  toggleButtons() {
-    if (this.moveCameraButton.parentElement) {
-      this.hideMoveCameraButton();
-      this.showBackButton();
-    } else {
-      this.hideBackButton();
-      this.showMoveCameraButton();
-    }
+  // Handle BIO button click
+  handleBioClick() {
+    // Move camera to y = 300 and replace BIO with SKILLS button
+    this.cameraController.moveTo({ x: 50, y: 900, z: -20 });
+    this.toggleToSkillsButton();
   }
 
-  // Show and hide sectionOne
-  showSectionOne() {
-    this.sectionOne.style.display = 'flex'; // Display sectionOne
+  // Handle SKILLS button click (add behavior as needed)
+  handleSkillsClick() {
+    console.log("SKILLS button clicked");
   }
 
-  hideSectionOne() {
-    this.sectionOne.style.display = 'none'; // Hide sectionOne
-  }
-
-  // Show the move camera button
+  // Show only Move Camera button
   showMoveCameraButton() {
-    if (!this.moveCameraButton.parentElement) {
-      this.buttonContainer.appendChild(this.moveCameraButton);
-    }
+    this.clearButtons();
+    this.buttonContainer.appendChild(this.moveCameraButton);
   }
 
-  // Hide the move camera button
-  hideMoveCameraButton() {
-    if (this.moveCameraButton.parentElement) {
-      this.buttonContainer.removeChild(this.moveCameraButton);
-    }
-  }
-
-  // Show the back button
-  showBackButton() {
+  // Show Back and BIO buttons in a row
+  showBackAndBioButtons() {
+    this.clearButtons();
     this.buttonContainer.appendChild(this.backButton);
+    this.buttonContainer.appendChild(this.bioButton);
   }
 
-  // Hide the back button
-  hideBackButton() {
-    if (this.backButton.parentElement) {
-      this.buttonContainer.removeChild(this.backButton);
-    }
+  // Toggle to show Move Camera button (reset sequence)
+  resetToMoveCameraButton() {
+    this.showMoveCameraButton();
+
+    // Reset the button sequence to show BIO on the next toggle
+    this.bioButton.style.display = 'block'; // Make sure BIO button is visible
+    this.skillsButton.style.display = 'none'; // Hide SKILLS button
   }
 
-  // Method to add other custom buttons
-  addButton({ label, position }) {
-    const button = document.createElement('button');
-    button.classList.add('control-button');
-    button.textContent = label;
+  // Toggle to Back and BIO buttons
+  toggleToBackAndBioButtons() {
+    this.showBackAndBioButtons();
+  }
 
-    button.addEventListener('click', () => {
-      const targetPosition = this.isMobile && position.mobile ? position.mobile : position.default;
-      this.cameraController.moveTo(targetPosition);
+  // Show the SKILLS button and hide the BIO button
+  toggleToSkillsButton() {
+    this.clearButtons();
+    this.buttonContainer.appendChild(this.backButton);
+    this.buttonContainer.appendChild(this.skillsButton);
+  }
+
+  // Hide sectionOne
+  hideSectionOne() {
+    this.sectionOne.style.display = 'none';
+  }
+
+  // Show sectionOne as flex
+  showSectionOne() {
+    this.sectionOne.style.display = 'flex';
+  }
+
+  // Clear all buttons from the button container
+  clearButtons() {
+    [this.moveCameraButton, this.backButton, this.bioButton, this.skillsButton].forEach(button => {
+      if (button.parentElement === this.buttonContainer) {
+        this.buttonContainer.removeChild(button);
+      }
     });
-
-    this.buttonContainer.appendChild(button);
   }
 }

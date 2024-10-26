@@ -94,8 +94,30 @@ html, body {
   align-items: center; /* Center content vertically */
   gap: 10px; /* Space between the buttons */
   z-index: 1000; /* Ensure the container stays on top of other elements */
-  flex-direction: column; /* Stacks the buttons vertically */
+  flex-direction: row; /* Stacks the buttons vertically */
+  height: 50px; /* Set the desired height for uniformity */
+  line-height: 50px; /* Aligns text vertically within the button */
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px; /* Standardize font size for all buttons */
+  box-sizing: border-box;
+  font-family: 'JetBrains Mono';
 }
+
+#buttonContainer .control-button {
+  font-family: 'JetBrains Mono';
+  min-height: 50px;
+
+}
+
+
+#buttonContainer .material-icons {
+  font-size: 24px; /* Icon size if using Material Icons */
+  line-height: 50px; /* Vertically aligns icon with button height */
+}
+
 
 #playPauseButton {
   width: 100px; /* Fixed width for the play/pause button */
@@ -111,6 +133,7 @@ html, body {
 
 #moveCameraButton {
   width: 250px; 
+  
   padding: 10px 20px;
   font-size: 16px;
   background-color: transparent;
