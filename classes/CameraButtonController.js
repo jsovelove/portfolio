@@ -1,10 +1,11 @@
 // CameraButtonController.js
 export class CameraButtonController {
-  constructor(cameraController, buttonContainer, moveCameraButton, sectionOne, moveCameraPosition, backPosition) {
+  constructor(cameraController, buttonContainer, moveCameraButton, sectionOne, aboutMe, moveCameraPosition, backPosition) {
     this.cameraController = cameraController;
     this.buttonContainer = buttonContainer;
     this.moveCameraButton = moveCameraButton;
     this.sectionOne = sectionOne;
+    this.aboutMe = aboutMe; // Add aboutMe element to the constructor
     this.isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
 
     // Define positions for moving and returning
@@ -35,7 +36,13 @@ export class CameraButtonController {
     this.skillsButton.textContent = "SKILLS";
     this.skillsButton.addEventListener('click', () => this.handleSkillsClick());
 
-    // Initially show sectionOne and Move Camera utton
+    // Create the PROJECTS button
+    this.projectsButton = document.createElement('button');
+    this.projectsButton.classList.add('control-button', 'page-button');
+    this.projectsButton.textContent = "PROJECTS";
+    this.projectsButton.addEventListener('click', () => this.handleProjectsClick());
+
+    // Initially show sectionOne and Move Camera button
     this.showSectionOne();
     this.showMoveCameraButton();
   }
@@ -58,18 +65,30 @@ export class CameraButtonController {
     // Reset sequence by displaying Move Camera button again
     this.resetToMoveCameraButton();
     this.showSectionOne();
+    this.hideAboutMe(); // Ensure aboutMe is hidden when reset
   }
 
   // Handle BIO button click
   handleBioClick() {
     // Move camera to y = 300 and replace BIO with SKILLS button
     this.cameraController.moveTo({ x: 50, y: 900, z: -20 });
-    this.toggleToSkillsButton();
+    this.toggleToBackAndSkillsButtons();
+    this.showAboutMe(); // Show aboutMe when BIO is clicked
   }
 
-  // Handle SKILLS button click (add behavior as needed)
+  // Handle SKILLS button click
   handleSkillsClick() {
-    console.log("SKILLS button clicked");
+    // Move camera to a higher position (e.g., y = 600) and replace SKILLS with PROJECTS button
+    this.cameraController.moveTo({ x: 50, y: 1200, z: -20 });
+    this.toggleToBackAndProjectsButtons();
+    this.hideAboutMe(); // Hide aboutMe when SKILLS is clicked
+  }
+
+  // Handle PROJECTS button click
+  handleProjectsClick() {
+    // Move camera to an even higher position (e.g., y = 900) or perform other actions
+    this.cameraController.moveTo({ x: 50, y: 2000, z: -20 });
+    console.log("PROJECTS button clicked");
   }
 
   // Show only Move Camera button
@@ -85,13 +104,23 @@ export class CameraButtonController {
     this.buttonContainer.appendChild(this.bioButton);
   }
 
+  // Show Back and SKILLS buttons in a row
+  showBackAndSkillsButtons() {
+    this.clearButtons();
+    this.buttonContainer.appendChild(this.backButton);
+    this.buttonContainer.appendChild(this.skillsButton);
+  }
+
+  // Show Back and PROJECTS buttons in a row
+  showBackAndProjectsButtons() {
+    this.clearButtons();
+    this.buttonContainer.appendChild(this.backButton);
+    this.buttonContainer.appendChild(this.projectsButton);
+  }
+
   // Toggle to show Move Camera button (reset sequence)
   resetToMoveCameraButton() {
     this.showMoveCameraButton();
-
-    // Reset the button sequence to show BIO on the next toggle
-    this.bioButton.style.display = 'block'; // Make sure BIO button is visible
-    this.skillsButton.style.display = 'none'; // Hide SKILLS button
   }
 
   // Toggle to Back and BIO buttons
@@ -99,11 +128,14 @@ export class CameraButtonController {
     this.showBackAndBioButtons();
   }
 
-  // Show the SKILLS button and hide the BIO button
-  toggleToSkillsButton() {
-    this.clearButtons();
-    this.buttonContainer.appendChild(this.backButton);
-    this.buttonContainer.appendChild(this.skillsButton);
+  // Toggle to Back and SKILLS buttons
+  toggleToBackAndSkillsButtons() {
+    this.showBackAndSkillsButtons();
+  }
+
+  // Toggle to Back and PROJECTS buttons
+  toggleToBackAndProjectsButtons() {
+    this.showBackAndProjectsButtons();
   }
 
   // Hide sectionOne
@@ -116,9 +148,19 @@ export class CameraButtonController {
     this.sectionOne.style.display = 'flex';
   }
 
+  // Show aboutMe section
+  showAboutMe() {
+    this.aboutMe.style.display = 'flex';
+  }
+
+  // Hide aboutMe section
+  hideAboutMe() {
+    this.aboutMe.style.display = 'none';
+  }
+
   // Clear all buttons from the button container
   clearButtons() {
-    [this.moveCameraButton, this.backButton, this.bioButton, this.skillsButton].forEach(button => {
+    [this.moveCameraButton, this.backButton, this.bioButton, this.skillsButton, this.projectsButton].forEach(button => {
       if (button.parentElement === this.buttonContainer) {
         this.buttonContainer.removeChild(button);
       }

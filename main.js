@@ -52,7 +52,8 @@ const cameraButtonController = new CameraButtonController(
   cameraController,
   buttonContainer,
   moveCameraButton,
-  sectionOne, // Pass the existing moveCameraButton
+  sectionOne,
+  aboutMe, // Pass the existing moveCameraButton
   { 
     default: { x: 25, y: 300, z: -20 }, // Move Camera position
     mobile: { x: 25, y: 300, z: -20 } 

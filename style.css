@@ -109,7 +109,10 @@ html, body {
 #buttonContainer .control-button {
   font-family: 'JetBrains Mono';
   min-height: 50px;
+}
 
+#buttonContainer button{
+  background-color: #ffffffd3;
 }
 
 
