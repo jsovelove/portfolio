@@ -70,7 +70,7 @@ analyser.fftSize = 256; //fft
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
-const audio = new Audio('public/bug.mp3');
+const audio = new Audio('/bug.mp3');
 audio.crossOrigin = 'anonymous';
 const track = audioContext.createMediaElementSource(audio);
 track.connect(analyser);
