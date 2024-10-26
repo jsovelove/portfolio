@@ -53,7 +53,8 @@ const cameraButtonController = new CameraButtonController(
   buttonContainer,
   moveCameraButton,
   sectionOne,
-  aboutMe, // Pass the existing moveCameraButton
+  aboutMe,
+  skills, // Pass the existing moveCameraButton
   { 
     default: { x: 25, y: 300, z: -20 }, // Move Camera position
     mobile: { x: 25, y: 300, z: -20 } 
@@ -160,6 +161,3 @@ function animate(time) {
 
 }
 renderer.setAnimationLoop(animate);
-
-
-

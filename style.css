@@ -51,6 +51,40 @@ html, body {
   z-index: 5; /* Ensure it's below the buttons but above the canvas */
 }
 
+#aboutMe {
+  display: none; /* Initially hidden */
+  position: relative; /* Adjust as needed */
+  padding: 20px; /* Add some padding for readability */
+  background-color: #f0f0f0be; /* Light background color */
+  color: #333; /* Text color */
+  border: 1px solid #ccc; /* Optional border */
+  border-radius: 8px; /* Rounded corners */
+  width: 80%; /* Adjust width as needed */
+  max-width: 600px; /* Limit maximum width */
+  margin: 20px auto; /* Center on the page */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for emphasis */
+  font-family: 'JetBrains Mono';
+
+}
+
+#skills {
+  display: none; /* Initially hidden */
+  position: relative; /* Adjust as needed */
+  padding: 20px; /* Add some padding for readability */
+  background-color: #f0f0f0be; /* Light background color */
+  color: #333; /* Text color */
+  border: 1px solid #ccc; /* Optional border */
+  border-radius: 8px; /* Rounded corners */
+  width: 80%; /* Adjust width as needed */
+  max-width: 600px; /* Limit maximum width */
+  margin: 20px auto; /* Center on the page */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for emphasis */
+  font-family: 'JetBrains Mono';
+
+}
+
+
+
 #section-one svg {
   font-size: clamp(32px, 8vw, 96px);
   font-family: 'JetBrains Mono';
@@ -104,7 +138,7 @@ html, body {
   font-size: 16px; /* Standardize font size for all buttons */
   box-sizing: border-box;
   font-family: 'JetBrains Mono';
-}
+} 
 
 #buttonContainer .control-button {
   font-family: 'JetBrains Mono';

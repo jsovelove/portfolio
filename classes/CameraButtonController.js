@@ -1,11 +1,12 @@
 // CameraButtonController.js
 export class CameraButtonController {
-  constructor(cameraController, buttonContainer, moveCameraButton, sectionOne, aboutMe, moveCameraPosition, backPosition) {
+  constructor(cameraController, buttonContainer, moveCameraButton, sectionOne, aboutMe, skills, moveCameraPosition, backPosition) {
     this.cameraController = cameraController;
     this.buttonContainer = buttonContainer;
     this.moveCameraButton = moveCameraButton;
     this.sectionOne = sectionOne;
-    this.aboutMe = aboutMe; // Add aboutMe element to the constructor
+    this.aboutMe = aboutMe; // Reference to aboutMe element
+    this.skills = skills; // Reference to skills element
     this.isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
 
     // Define positions for moving and returning
@@ -66,6 +67,7 @@ export class CameraButtonController {
     this.resetToMoveCameraButton();
     this.showSectionOne();
     this.hideAboutMe(); // Ensure aboutMe is hidden when reset
+    this.hideSkills(); // Ensure skills is hidden when reset
   }
 
   // Handle BIO button click
@@ -79,15 +81,16 @@ export class CameraButtonController {
   // Handle SKILLS button click
   handleSkillsClick() {
     // Move camera to a higher position (e.g., y = 600) and replace SKILLS with PROJECTS button
-    this.cameraController.moveTo({ x: 50, y: 1200, z: -20 });
+    this.cameraController.moveTo({ x: 50, y: 1500, z: -20 });
     this.toggleToBackAndProjectsButtons();
     this.hideAboutMe(); // Hide aboutMe when SKILLS is clicked
+    this.showSkills(); // Show skills section when SKILLS is clicked
   }
 
   // Handle PROJECTS button click
   handleProjectsClick() {
     // Move camera to an even higher position (e.g., y = 900) or perform other actions
-    this.cameraController.moveTo({ x: 50, y: 2000, z: -20 });
+    this.cameraController.moveTo({ x: 50, y: 900, z: -20 });
     console.log("PROJECTS button clicked");
   }
 
@@ -156,6 +159,16 @@ export class CameraButtonController {
   // Hide aboutMe section
   hideAboutMe() {
     this.aboutMe.style.display = 'none';
+  }
+
+  // Show skills section
+  showSkills() {
+    this.skills.style.display = 'flex';
+  }
+
+  // Hide skills section
+  hideSkills() {
+    this.skills.style.display = 'none';
   }
 
   // Clear all buttons from the button container
