@@ -6,7 +6,7 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {HalftonePass} from 'three/examples/jsm/postprocessing/HalftonePass.js';
 import { gsap } from 'gsap';
 
-const jackURL = new URL('voxelme3.glb', import.meta.url);
+const jackURL = new URL('voxelme2.glb', import.meta.url);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -249,13 +249,13 @@ for (let i = 0; i < 100; i++) {
 }
 
 
-var geo = new THREE.PlaneGeometry(100, 100, 8, 8);
-var mat = new THREE.MeshBasicMaterial({ color:'white', side: THREE.DoubleSide });
-var plane = new THREE.Mesh(geo, mat);
-plane.receiveShadow = true;
-scene.add(plane);
-plane.rotation.x = Math.PI * 0.5;
-
+// var geo = new THREE.PlaneGeometry(100, 100, 8, 8);
+// var mat = new THREE.MeshBasicMaterial({ color:'white', side: THREE.DoubleSide });
+// var plane = new THREE.Mesh(geo, mat);
+// plane.receiveShadow = true;
+// scene.add(plane);
+// plane.rotation.x = Math.PI * 0.5;
+ 
 
 const assetLoader = new GLTFLoader();
 assetLoader.load(jackURL.href, function(gltf){
