@@ -242,7 +242,7 @@ function createRing(innerRadius, outerRadius) {
     defaultScales.push(1);
 }
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 50; i++) {
     const innerRadius = 1 + i * 3;
     const outerRadius = innerRadius + 0.3;
     createRing(innerRadius, outerRadius, 0);
@@ -280,13 +280,13 @@ var geometry3 = new THREE.SphereGeometry(25, 25, 14);
 
 
 var mesh2 = new THREE.Points(geometry2, mat2);
-mesh2.position.z = -500;
-mesh2.position.x = 100;
-mesh2.position.y = 120;
+mesh2.position.z = 280;
+mesh2.position.x = 200;
+mesh2.position.y = 90;
 scene.add(mesh2);
 var mesh3 = new THREE.Points(geometry3, mat2);
-mesh3.position.z = -200;
-mesh3.position.x = -400;
+mesh3.position.z = -120;
+mesh3.position.x = -320;
 mesh3.position.y = 90;
 scene.add(mesh3);
 
