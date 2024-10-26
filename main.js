@@ -13,7 +13,7 @@ const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
-  2000
+  3000
 );
 const moveCameraButton = document.getElementById('moveCameraButton');
 
@@ -250,12 +250,7 @@ for (let i = 0; i < 100; i++) {
 
 
 var geo = new THREE.PlaneGeometry(100, 100, 8, 8);
-var mat = new THREE.MeshBasicMaterial({
-  color: 'white',
-  side: THREE.DoubleSide,
-  opacity: 1,
-  transparent: true
-});
+var mat = new THREE.MeshBasicMaterial({ color:'white', side: THREE.DoubleSide });
 var plane = new THREE.Mesh(geo, mat);
 plane.receiveShadow = true;
 scene.add(plane);
