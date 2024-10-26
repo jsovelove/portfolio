@@ -124,8 +124,7 @@ function createNewButtons() {
 
   // Add event listeners to the new buttons
   backButton.addEventListener('click', () => {
-    navContainer.removeChild(backButton);
-    navContainer.removeChild(rightButton);
+    buttonContainer.removeChild(navContainer);
     buttonContainer.appendChild(moveCameraButton);
     if (isMobile) {
       moveCameraToPosition(25, 42, -30); // Higher position for smaller screens
@@ -146,7 +145,6 @@ function createNewButtons() {
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
 });
-renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize(window.innerWidth , window.innerHeight);
 renderer.render(scene, camera);
 
