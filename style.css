@@ -84,29 +84,53 @@ html, body {
 }
 
 
-
 #buttonContainer {
+  width: 100%;
   position: fixed;
   bottom: 20px; /* Distance from the bottom of the screen */
-  left: 50%;
-  transform: translateX(-50%); /* Center the container horizontally */
+  left: 0;
   display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
   gap: 10px; /* Space between the buttons */
   z-index: 1000; /* Ensure the container stays on top of other elements */
-  flex-direction: row;
+  flex-direction: column; /* Stacks the buttons vertically */
 }
 
-
-#playPauseButton,
-#moveCameraButton {
+#playPauseButton {
+  width: 100px; /* Fixed width for the play/pause button */
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #0077ff;
-  color: #ffffff;
-  border: none;
+  background-color: transparent;
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center; /* Ensures the text or icon inside is centered */
+}
+
+#moveCameraButton {
+  width: 250px; 
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center; /* Ensures the text or icon inside is centered */
+}
+button.control-button {
+  width: 100px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 3px solid #000000;
   border-radius: 5px;
   cursor: pointer;
 }
+
 
 
 

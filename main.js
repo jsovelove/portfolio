@@ -6,7 +6,7 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {HalftonePass} from 'three/examples/jsm/postprocessing/HalftonePass.js';
 import { gsap } from 'gsap';
 
-
+const isMobile = window.innerWidth <= 768;
 const jackURL = new URL('voxelme3.glb', import.meta.url);
 
 const scene = new THREE.Scene();
@@ -16,30 +16,33 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   700
 );
-
-
 const moveCameraButton = document.getElementById('moveCameraButton');
 
-function moveCameraToPosition() {
+
+function moveCameraToPosition(x, y, z) {
   gsap.to(camera.position, {
-    x: 25,
-    y: 240,
-    z: -20,
-    duration: 2, // Duration of the animation in seconds
-    ease: 'power2.out', // Easing function for smooth movement
+    x: x,
+    y: y,
+    z: z,
+    duration: 2, // Adjust as needed for smoothness
+    ease: 'power2.out',
     onUpdate: () => {
-      camera.lookAt(targetPoint); // Ensure the camera keeps looking at the target during the animation
+      camera.lookAt(targetPoint);
     }
   });
 }
-moveCameraButton.addEventListener('click', moveCameraToPosition);
+
+moveCameraButton.addEventListener('click', () => {
+  moveCameraToPosition(25, 220, -20); // Move the camera to a higher position
+  createNewButtons(); // Create the new buttons after moving the camera
+});
 
 const sectionOne = document.getElementById('section-one');
 const aboutMe = document.getElementById('aboutMe');
 
 function fadeOut(element, duration = 0.5) {
   gsap.to(element, { opacity: 0, duration: duration, onComplete: () => {
-    element.style.display = 'none'; // Hide the element after fading out
+    element.style.display = 'none';
   }});
 }
 
@@ -49,7 +52,7 @@ function fadeIn(element, duration = 0.5) {
 }
 
 function checkCameraPosition() {
-  const thresholdY = 100; // Adjust this value as needed
+  const thresholdY = 100;
 
   // Show or hide sections based on camera's y position
   if (camera.position.y > thresholdY) {
@@ -61,7 +64,6 @@ function checkCameraPosition() {
   }
 }
 
-const playPauseButton = document.getElementById('playPauseButton');
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioContext.createAnalyser();
 analyser.fftSize = 256; //fft
@@ -73,19 +75,68 @@ audio.crossOrigin = 'anonymous';
 const track = audioContext.createMediaElementSource(audio);
 track.connect(analyser);
 analyser.connect(audioContext.destination);
+const buttonContainer = document.getElementById('buttonContainer');
+
+const playPauseButton = document.getElementById('playPauseButton');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
 
 function togglePlayPause() {
   if (audio.paused) {
-      audio.play();
-      playPauseButton.textContent = 'Pause';
+    audio.play();
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
   } else {
-      audio.pause();
-      playPauseButton.textContent = 'Play';
+    audio.pause();
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
   }
 }
-
+playPauseButton.addEventListener('click', togglePlayPause);
 playPauseButton.addEventListener('click', togglePlayPause);
 
+function createNewButtons() {
+  // Create buttons for going back to the original position and moving right
+  const navContainer = document.createElement('div')
+  buttonContainer.appendChild(navContainer);
+
+
+  // Create the Back (Up Arrow) button
+  const backButton = document.createElement('button');
+  backButton.classList.add('control-button');
+  const backIcon = document.createElement('span');
+  backIcon.classList.add('material-icons');
+  backIcon.textContent = 'arrow_upward'; // Use the up arrow icon
+  backButton.appendChild(backIcon);
+
+  // Create the Right (Right Arrow) button
+  const rightButton = document.createElement('button');
+  rightButton.classList.add('control-button');
+  const rightIcon = document.createElement('span');
+  rightIcon.classList.add('material-icons');
+  rightIcon.textContent = 'arrow_downward'; // Use the right arrow icon
+  rightButton.appendChild(rightIcon);
+
+  // Add event listeners to the new buttons
+  backButton.addEventListener('click', () => {
+    navContainer.removeChild(backButton);
+    navContainer.removeChild(rightButton);
+    buttonContainer.appendChild(moveCameraButton);
+    if (isMobile) {
+      moveCameraToPosition(25, 42, -30); // Higher position for smaller screens
+    } else {
+      moveCameraToPosition(25, 28, -20); // Original position for larger screens
+    }
+  });
+
+  rightButton.addEventListener('click', () => {
+    moveCameraToPosition(50, 900, -20); // Move to the right
+  });
+  buttonContainer.removeChild(moveCameraButton);
+  buttonContainer.appendChild(navContainer);
+  navContainer.appendChild(backButton);
+  navContainer.appendChild(rightButton);
+}
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
@@ -179,31 +230,6 @@ assetLoader.load(jackURL.href, function(gltf){
     console.error(error);
 });
 
-// let pc;
-// assetLoader.load(computer.href, function(gltf){
-//   pc = gltf.scene;
-//   scene.add(pc);
-//   pc.position.set(-20, 110, -100);
-//   // model.rotation.y = Math.PI * 0.25
-//   pc.rotation.x = Math.PI * 0.05
-  
-  
-// }, undefined, function(error) {
-//   console.error(error);
-// });
-
-// let spaceship;
-// assetLoader.load(ship.href, function(gltf){
-//   spaceship = gltf.scene;
-//   scene.add(spaceship);
-//   spaceship.position.set(250, 110, -200);
-//   // model.rotation.y = Math.PI * 0.25
-  
-  
-// }, undefined, function(error) {
-//   console.error(error);
-// });
-
 var mat2 = new THREE.PointsMaterial({
 	color: 'black',
 	size: 1,
@@ -243,7 +269,9 @@ function animate(time) {
 	mesh2.rotation.z += 0.001;
   mesh3.rotation.y -= 0.001;
 	mesh3.rotation.z -= 0.001;
-
+  // if (me) {
+  //   me.position.x += 0.01; // Adjust the speed as needed
+  // }
   composer.render(scene, camera);
 
   rings.forEach((ring, index) => {
@@ -283,7 +311,7 @@ function resize() {
   composer.setSize(window.innerWidth, window.innerHeight);
 
   // Adjust the camera position to ensure it keeps the target centered on desktop
-  const isMobile = window.innerWidth <= 768; // Adjust the threshold for mobile as needed
+   // Adjust the threshold for mobile as needed
   if (isMobile) {
     camera.position.set(25, 42, -30); // Higher position for smaller screens
   } else {
@@ -293,10 +321,8 @@ function resize() {
   camera.lookAt(targetPoint); // Ensure the camera looks at the model's position
 }
 
-// Add event listener for window resize
 window.addEventListener('resize', resize);
 
-// Initial setup for camera position
 camera.position.set(25, 28, -20);
 camera.lookAt(targetPoint);
 

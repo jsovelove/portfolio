@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Jack Sovelove</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style> @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,300;0,400;0,600;0,700;1,700&display=swap'); </style>
   </head>
   <body>
@@ -25,8 +26,15 @@
         </svg>
       </div>
       <div id="buttonContainer">
-        <button id="playPauseButton">Play</button>
-        <button id="moveCameraButton">About</button>
+        <button id="playPauseButton">
+          <span id="playIcon" class="material-icons" style="display: block;">play_arrow</span>
+          <span id="pauseIcon" class="material-icons" style="display: none;">pause</span>
+        </button>
+        
+        <button id="moveCameraButton">
+          <span class="material-icons">arrow_downward</span>
+        </button>
+        
       </div>
       
       <div id="aboutMe" style="display: none;">
