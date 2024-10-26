@@ -6,7 +6,6 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {HalftonePass} from 'three/examples/jsm/postprocessing/HalftonePass.js';
 import { gsap } from 'gsap';
 
-const isMobile = window.innerWidth <= 768;
 const jackURL = new URL('voxelme3.glb', import.meta.url);
 
 const scene = new THREE.Scene();
@@ -17,7 +16,6 @@ const camera = new THREE.PerspectiveCamera(
   2000
 );
 const moveCameraButton = document.getElementById('moveCameraButton');
-
 
 function moveCameraToPosition(x, y, z) {
   gsap.to(camera.position, {
@@ -98,9 +96,46 @@ function togglePlayPause() {
   }
 }
 playPauseButton.addEventListener('click', togglePlayPause);
-playPauseButton.addEventListener('click', togglePlayPause);
+
+// Target point where your character or model is positioned
+const targetPoint = new THREE.Vector3(13, 0.2, 7); // Adjust this to your model's position
+
+function resize() {
+  const isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
+  // Update the aspect ratio of the camera
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  // Update the renderer size
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  // Update the halftone pass with the new window dimensions (if needed)
+  pass.uniforms.width.value = window.innerWidth;
+  pass.uniforms.height.value = window.innerHeight;
+  composer.setSize(window.innerWidth, window.innerHeight);
+
+  // Adjust the camera position to ensure it keeps the target centered on desktop
+   // Adjust the threshold for mobile as needed
+  if (isMobile) {
+    camera.position.set(25, 45, -30); // Higher position for smaller screens
+  } else {
+    camera.position.set(25, 28, -20); // Original position for larger screens
+  }
+
+  camera.lookAt(targetPoint); // Ensure the camera looks at the model's position
+}
+const isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
+
+window.addEventListener('resize', resize);
+if (isMobile) {
+  camera.position.set(25, 45, -30); // Higher position for smaller screens
+} else {
+  camera.position.set(25, 28, -20); // Original position for larger screens
+}
+camera.lookAt(targetPoint);
+
 
 function createNewButtons() {
+  const isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
+
   // Create buttons for going back to the original position and moving right
   const navContainer = document.createElement('div')
   buttonContainer.appendChild(navContainer);
@@ -127,7 +162,7 @@ function createNewButtons() {
     buttonContainer.removeChild(navContainer);
     buttonContainer.appendChild(moveCameraButton);
     if (isMobile) {
-      moveCameraToPosition(25, 42, -30); // Higher position for smaller screens
+      moveCameraToPosition(25, 45, -30); // Higher position for smaller screens
     } else {
       moveCameraToPosition(25, 28, -20); // Original position for larger screens
     }
@@ -209,13 +244,18 @@ function createRing(innerRadius, outerRadius) {
 
 for (let i = 0; i < 100; i++) {
     const innerRadius = 1 + i * 3;
-    const outerRadius = innerRadius + 0.1;
+    const outerRadius = innerRadius + 0.3;
     createRing(innerRadius, outerRadius, 0);
 }
 
 
-var geo = new THREE.PlaneGeometry(1000, 1000, 8, 8);
-var mat = new THREE.MeshBasicMaterial({ color:'white', side: THREE.DoubleSide });
+var geo = new THREE.PlaneGeometry(100, 100, 8, 8);
+var mat = new THREE.MeshBasicMaterial({
+  color: 'white',
+  side: THREE.DoubleSide,
+  opacity: 1,
+  transparent: true
+});
 var plane = new THREE.Mesh(geo, mat);
 plane.receiveShadow = true;
 scene.add(plane);
@@ -299,35 +339,4 @@ function animate(time) {
 renderer.setAnimationLoop(animate);
 
 
-
-// Target point where your character or model is positioned
-const targetPoint = new THREE.Vector3(13, 0.2, 7); // Adjust this to your model's position
-
-function resize() {
-  // Update the aspect ratio of the camera
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  // Update the renderer size
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  // Update the halftone pass with the new window dimensions (if needed)
-  pass.uniforms.width.value = window.innerWidth;
-  pass.uniforms.height.value = window.innerHeight;
-  composer.setSize(window.innerWidth, window.innerHeight);
-
-  // Adjust the camera position to ensure it keeps the target centered on desktop
-   // Adjust the threshold for mobile as needed
-  if (isMobile) {
-    camera.position.set(25, 42, -30); // Higher position for smaller screens
-  } else {
-    camera.position.set(25, 28, -20); // Original position for larger screens
-  }
-
-  camera.lookAt(targetPoint); // Ensure the camera looks at the model's position
-}
-
-window.addEventListener('resize', resize);
-
-camera.position.set(25, 28, -20);
-camera.lookAt(targetPoint);
 
