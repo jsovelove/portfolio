@@ -82,6 +82,11 @@ const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
 
 function togglePlayPause() {
+  // Ensure the AudioContext is resumed after a user gesture
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
+
   if (audio.paused) {
     audio.play();
     playIcon.style.display = 'none';
