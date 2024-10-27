@@ -125,39 +125,47 @@ html, body {
 #buttonContainer {
   width: 100%;
   position: fixed;
-  bottom: 20px; /* Distance from the bottom of the screen */
+  bottom: 20px;
   left: 0;
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
-  gap: 10px; /* Space between the buttons */
-  z-index: 1000; /* Ensure the container stays on top of other elements */
-  flex-direction: row; /* Stacks the buttons vertically */
-  height: 50px; /* Set the desired height for uniformity */
-  line-height: 50px; /* Aligns text vertically within the button */
-  min-height: 50px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+  flex-direction: row;
+  font-family: 'JetBrains Mono';
+}
+
+/* Common style for all buttons in the container */
+#buttonContainer .control-button {
+  width: 100px; /* Fixed width for uniform size */
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 16px; /* Standardize font size for all buttons */
+  justify-content: center; /* Ensures content is centered */
   box-sizing: border-box;
   font-family: 'JetBrains Mono';
-} 
 
-#buttonContainer .control-button {
-  font-family: 'JetBrains Mono';
-  min-height: 50px;
 }
+
+#buttonContainer .material-icons {
+  font-size: 24px; /* Consistent icon size */
+}
+
 
 #buttonContainer button{
   background-color: #ffffffd3;
 }
 
 
-#buttonContainer .material-icons {
-  font-size: 24px; /* Icon size if using Material Icons */
-  line-height: 50px; /* Vertically aligns icon with button height */
-}
+
 
 
 #playPauseButton {
