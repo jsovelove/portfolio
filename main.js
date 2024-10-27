@@ -54,7 +54,6 @@ const cameraButtonController = new CameraButtonController(
   moveCameraButton,
   sectionOne,
   aboutMe,
-  skills, // Pass the existing moveCameraButton
   { 
     default: { x: 25, y: 300, z: -20 }, // Move Camera position
     mobile: { x: 25, y: 300, z: -20 } 
@@ -64,7 +63,6 @@ const cameraButtonController = new CameraButtonController(
     mobile: { x: 25, y: 45, z: -30 } 
   }
 );
-
 
 
 cameraController.resize(window.innerWidth, window.innerHeight);

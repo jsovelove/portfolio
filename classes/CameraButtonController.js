@@ -1,12 +1,11 @@
 // CameraButtonController.js
 export class CameraButtonController {
-  constructor(cameraController, buttonContainer, moveCameraButton, sectionOne, aboutMe, skills, moveCameraPosition, backPosition) {
+  constructor(cameraController, buttonContainer, moveCameraButton, sectionOne, aboutMe, moveCameraPosition, backPosition) {
     this.cameraController = cameraController;
     this.buttonContainer = buttonContainer;
     this.moveCameraButton = moveCameraButton;
     this.sectionOne = sectionOne;
     this.aboutMe = aboutMe; // Reference to aboutMe element
-    this.skills = skills; // Reference to skills element
     this.isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
 
     // Define positions for moving and returning
@@ -30,12 +29,6 @@ export class CameraButtonController {
     this.bioButton.classList.add('control-button', 'page-button');
     this.bioButton.textContent = "BIO";
     this.bioButton.addEventListener('click', () => this.handleBioClick());
-
-    // Create the SKILLS button
-    this.skillsButton = document.createElement('button');
-    this.skillsButton.classList.add('control-button', 'page-button');
-    this.skillsButton.textContent = "SKILLS";
-    this.skillsButton.addEventListener('click', () => this.handleSkillsClick());
 
     // Create the PROJECTS button
     this.projectsButton = document.createElement('button');
@@ -67,30 +60,20 @@ export class CameraButtonController {
     this.resetToMoveCameraButton();
     this.showSectionOne();
     this.hideAboutMe(); // Ensure aboutMe is hidden when reset
-    this.hideSkills(); // Ensure skills is hidden when reset
   }
 
   // Handle BIO button click
   handleBioClick() {
-    // Move camera to y = 300 and replace BIO with SKILLS button
+    // Move camera to y = 300 and replace BIO with PROJECTS button
     this.cameraController.moveTo({ x: 50, y: 900, z: -20 });
-    this.toggleToBackAndSkillsButtons();
-    this.showAboutMe(); // Show aboutMe when BIO is clicked
-  }
-
-  // Handle SKILLS button click
-  handleSkillsClick() {
-    // Move camera to a higher position (e.g., y = 600) and replace SKILLS with PROJECTS button
-    this.cameraController.moveTo({ x: 50, y: 1500, z: -20 });
     this.toggleToBackAndProjectsButtons();
-    this.hideAboutMe(); // Hide aboutMe when SKILLS is clicked
-    this.showSkills(); // Show skills section when SKILLS is clicked
+    this.showAboutMe(); // Show aboutMe when BIO is clicked
   }
 
   // Handle PROJECTS button click
   handleProjectsClick() {
-    // Move camera to an even higher position (e.g., y = 900) or perform other actions
-    this.cameraController.moveTo({ x: 50, y: 900, z: -20 });
+    // Move camera to an even higher position (e.g., y = 600) or perform other actions
+    this.cameraController.moveTo({ x: 50, y: 600, z: -20 });
     console.log("PROJECTS button clicked");
   }
 
@@ -105,13 +88,6 @@ export class CameraButtonController {
     this.clearButtons();
     this.buttonContainer.appendChild(this.backButton);
     this.buttonContainer.appendChild(this.bioButton);
-  }
-
-  // Show Back and SKILLS buttons in a row
-  showBackAndSkillsButtons() {
-    this.clearButtons();
-    this.buttonContainer.appendChild(this.backButton);
-    this.buttonContainer.appendChild(this.skillsButton);
   }
 
   // Show Back and PROJECTS buttons in a row
@@ -129,11 +105,6 @@ export class CameraButtonController {
   // Toggle to Back and BIO buttons
   toggleToBackAndBioButtons() {
     this.showBackAndBioButtons();
-  }
-
-  // Toggle to Back and SKILLS buttons
-  toggleToBackAndSkillsButtons() {
-    this.showBackAndSkillsButtons();
   }
 
   // Toggle to Back and PROJECTS buttons
@@ -161,19 +132,9 @@ export class CameraButtonController {
     this.aboutMe.style.display = 'none';
   }
 
-  // Show skills section
-  showSkills() {
-    this.skills.style.display = 'flex';
-  }
-
-  // Hide skills section
-  hideSkills() {
-    this.skills.style.display = 'none';
-  }
-
   // Clear all buttons from the button container
   clearButtons() {
-    [this.moveCameraButton, this.backButton, this.bioButton, this.skillsButton, this.projectsButton].forEach(button => {
+    [this.moveCameraButton, this.backButton, this.bioButton, this.projectsButton].forEach(button => {
       if (button.parentElement === this.buttonContainer) {
         this.buttonContainer.removeChild(button);
       }
