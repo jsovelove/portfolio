@@ -113,6 +113,32 @@ html, body {
   }
 }
 
+#loadingScreen {
+  display: flex; /* Enables flexbox for centering */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  position: fixed; /* Ensures it covers the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+  color: #ffffff; /* White text for visibility */
+  font-family: 'JetBrains Mono', monospace; /* Apply font family */
+  z-index: 1000; /* Ensures it stays on top of other elements */
+  flex-direction: column; /* Stacks elements vertically */
+}
+
+#loadingProgress {
+  width: 50%; /* Progress bar width */
+  height: 5px;
+  background-color: #ff0000; /* Progress bar color */
+  margin-top: 20px; /* Space above the progress bar */
+  text-align: center;
+  color: #ffffff; /* Text color */
+  font-size: 0.9em; /* Slightly smaller font size */
+}
+
 
 #avatar {
   height: calc(100px + 5vw);
@@ -152,7 +178,6 @@ html, body {
   justify-content: center; /* Ensures content is centered */
   box-sizing: border-box;
   font-family: 'JetBrains Mono';
-
 }
 
 #buttonContainer .material-icons {

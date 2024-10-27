@@ -2,9 +2,9 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export class AssetLoader {
-  constructor(scene) {
+  constructor(scene, loadingManager = null) {
     this.scene = scene;
-    this.loader = new GLTFLoader();
+    this.loader = loadingManager ? new GLTFLoader(loadingManager.getManager()) : new GLTFLoader();
   }
 
   loadModel(url, options = {}) {

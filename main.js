@@ -12,6 +12,14 @@ import { AssetLoader } from '/classes/AssetLoader.js';
 import { PointMesh } from '/classes/PointMesh.js';
 import { CameraController } from '/classes/CameraController.js';
 import { CameraButtonController } from './classes/CameraButtonController.js';
+import { LoadingManager } from './classes/LoadingManager.js';
+
+
+
+const loadingManager = new LoadingManager(() => {
+  console.log('All assets loaded! Starting the scene...');
+  // Any initialization code you want to run after loading completes
+});
 
 const targetPoint = new THREE.Vector3(13, 0.2, 7); // Adjust this to your model's position
 const isMobile = window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024;
@@ -124,7 +132,8 @@ scene.add(directionalLight);
 directionalLight.position.set(0, 50, -30);
 directionalLight.lookAt(30, 10, 0)
 
-const assetLoader = new AssetLoader(scene);
+const assetLoader = new AssetLoader(scene, loadingManager);
+
 const modelUrl = new URL('voxelme2.glb', import.meta.url);
 assetLoader.loadModel(modelUrl.href, {
   position: { x: 9, y: 0.34, z: 6 },
