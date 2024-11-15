@@ -31,7 +31,7 @@ const cameraController = new CameraController(
   0.1,
   1000,
   { 
-    default: { x: 25, y: 28, z: -20 }, // Default desktop position
+    default: { x: 25, y: 45, z: -20 }, // Default desktop position
     mobile: { x: 25, y: 45, z: -30 }  // Initial mobile position
   },
   targetPoint
@@ -67,8 +67,8 @@ const cameraButtonController = new CameraButtonController(
     mobile: { x: 25, y: 300, z: -20 } 
   },
   { 
-    default: { x: 25, y: 28, z: -20 }, // Back position
-    mobile: { x: 25, y: 45, z: -30 } 
+    default: { x: 35, y: 45, z: -20 }, // Back position
+    mobile: { x: 35, y: 45, z: -30 } 
   }
 );
 

@@ -90,7 +90,7 @@ html, body {
 
 
 #section-one svg {
-  font-size: clamp(32px, 8vw, 96px);
+  font-size: clamp(20px, 6vw, 80px);
   font-family: 'JetBrains Mono';
   letter-spacing: 0.15em;
   fill: black;

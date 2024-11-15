@@ -20,7 +20,7 @@ export class CameraController {
     this.camera.updateProjectionMatrix();
 
     // Adjust camera position based on device type
-    const targetPosition = this.isMobile ? { x: 25, y: 45, z: -30 } : { x: 25, y: 28, z: -20 };
+    const targetPosition = this.isMobile ? { x: 35, y: 45, z: -30 } : { x: 35, y: 45, z: -20 };
     this.camera.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
 
     // Ensure the camera looks at the target
